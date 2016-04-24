@@ -2,10 +2,11 @@ var path = require('path');
 
 module.exports = {
     context: __dirname + "/src",
-    entry: "./main",
+    entry: "./js/main",
     output: {
         path: __dirname + "/dist",
-        filename: "main.js"
+        publicPath: "/dist/static/js/",
+        filename: "static/js/main.js"
     },
     module: {
       loaders: [
@@ -15,12 +16,12 @@ module.exports = {
 
           // "include" is commonly used to match the directories
           include: [
-            path.resolve(__dirname, "src"),
+            path.resolve(__dirname, "src/js"),
             path.resolve(__dirname, "test")
           ],
-
-          // "exclude" should be used to exclude exceptions
-          // try to prefer "include" when possible
+          query: {
+            presets: ['react', 'es2015']
+          },
 
           // the "loader"
           loader: "babel-loader"

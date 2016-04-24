@@ -6,18 +6,29 @@ var WebpackDevServer = require("webpack-dev-server");
 var webpackConfig = require("./webpack.config.js");
 
 // The development server (the recommended option for development)
-gulp.task("default", ["webpack-dev-server"]);
+gulp.task("default", ["watch:html", "webpack-dev-server"]);
+
+gulp.task("watch:html", function(callback) {
+    gulp.watch(["src/**/*"], ["copy:html"]);
+});
 
 // Build and watch cycle (another option for development)
 // Advantage: No server required, can run app from filesystem
 // Disadvantage: Requests are not blocked until bundle is available,
 //               can serve an old app on refresh
-gulp.task("build-dev", ["webpack:build-dev"], function() {
+gulp.task("build-dev", ["copy:html", "webpack:build-dev"], function() {
     gulp.watch(["src/**/*"], ["webpack:build-dev"]);
 });
 
 // Production build
-gulp.task("build", ["webpack:build"]);
+gulp.task("build", ["copy:html", "webpack:build"]);
+
+gulp.task("copy:html", function(callback) {
+    var stream = gulp.src('src/html/**/*.html')
+        .pipe(gulp.dest('dist'));
+
+    return stream;
+});
 
 gulp.task("webpack:build", function(callback) {
     // modify some webpack config options
@@ -52,6 +63,7 @@ webpackConfigDebug.debug = true;
 var devCompiler = webpack(webpackConfigDebug);
 
 gulp.task("webpack:build-dev", function(callback) {
+
     // run webpack
     devCompiler.run(function(err, stats) {
         if(err) throw new gutil.PluginError("webpack:build-dev", err);
@@ -63,17 +75,13 @@ gulp.task("webpack:build-dev", function(callback) {
 });
 
 gulp.task("webpack-dev-server", function(callback) {
-    // Start a webpack-dev-server
-    var compiler = webpack(webpackConfigDebug);
 
-    new WebpackDevServer(compiler, {
-        // server and middleware options
+    new WebpackDevServer(devCompiler, {
+        contentBase: "dist"
     }).listen(8080, "localhost", function(err) {
         if(err) throw new gutil.PluginError("webpack-dev-server", err);
         // Server listening
         gutil.log("[webpack-dev-server]", "http://localhost:8080/webpack-dev-server/index.html");
-
-        // keep the server alive or continue?
-        // callback();
+        callback();
     });
 });
