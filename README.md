@@ -12,7 +12,10 @@ Installing Gulp this way allows you to use Gulp via the command line.
 
 `$ gulp`
 
-Start the Webpack Dev Server and watch src/**. Use this at the start of your dev workflow.
+Start the Webpack Dev Server and watch src/**. Use this at the start of your dev workflow. Then open:
+
+[http://localhost:8080/webpack-dev-server/](http://localhost:8080/webpack-dev-server/)
+
 
 `$ gulp build`
 
