@@ -28,6 +28,12 @@ Start the Webpack Dev Server and watch src/**. Use this at the start of your dev
 
 Build the project into `dist`.
 
+## Installing a Module
+
+`$ npm i --save some-module && npm run shrinkwrap`
+`$ npm test`
+`$ git commit -m 'Added some-module.'`
+
 ## Testing
 
 `$ gulp test`
