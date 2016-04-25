@@ -17,9 +17,6 @@ module.exports = function (config) {
         webpack: {
             devtool: 'inline-source-map',
             module: webpackConfig.module
-        },
-        webpackServer: {
-            noInfo: true
         }
     });
 }
