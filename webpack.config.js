@@ -11,17 +11,13 @@ module.exports = {
     module: {
       loaders: [
         {
-          // 'test' is commonly used to match the file extension
           test: /\.jsx?$/,
-
-          // 'include' is commonly used to match the directories
           include: [
             path.resolve(__dirname, 'src/js')
           ],
           query: {
             presets: ['react', 'es2015']
           },
-
           loader: 'babel-loader'
         }
       ]
