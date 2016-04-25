@@ -6,6 +6,7 @@ var WebpackDevServer = require("webpack-dev-server");
 var webpackConfig = require("./webpack.config.js");
 var KarmaServer = require('karma').Server;
 
+var combiner = require('stream-combiner2');
 var lessCompiler = require('gulp-less');
 var LessPluginCleanCSS = require("less-plugin-clean-css");
 
@@ -23,7 +24,7 @@ gulp.task("watch:html", function(callback) {
 });
 
 // Production build
-gulp.task("build", ["copy:html", "test", "webpack:build"]);
+gulp.task("build", ["copy:html", "test", "build:less", "webpack:build"]);
 
 gulp.task("copy:html", function(callback) {
     var stream = gulp.src('src/html/**/*.html')
@@ -66,7 +67,7 @@ var devCompiler = webpack(webpackConfigDebug);
 
 gulp.task("webpack-dev-server", function(callback) {
 
-    new WebpackDevServer(devCompiler, {
+    var server = new WebpackDevServer(devCompiler, {
         contentBase: "dist"
     }).listen(8888, "localhost", function(err) {
         if(err) throw new gutil.PluginError("webpack-dev-server", err);
@@ -115,21 +116,25 @@ gulp.task("build:less", function () {
         lessConfig: {
             plugins: [],
             paths: [
-                // If you need to source LESS imports from node_modules you
-                // can provide the path here, or use less-plugin-npm-import
+                // If you need to source LESS imports from node_modules, etc you
+                // can provide those paths here, or use less-plugin-npm-import.
             ]
         }
     }
 
-    var linter = new LessPluginCleanCSS({
+    var minifier = new LessPluginCleanCSS({
         advanced: true,
         keepBreaks: true
     });
-    config.lessConfig.plugins.push(linter);
+    config.lessConfig.plugins.push(minifier);
 
-    var stream = gulp.src(config.src)
-        .pipe(lessCompiler(config.lessConfig))
-        .pipe(gulp.dest(config.dest));
+    var combined = combiner.obj([
+        gulp.src(config.src),
+        lessCompiler(config.lessConfig),
+        gulp.dest(config.dest)
+    ]);
 
-    return stream;
+    combined.on('error', gutil.log.bind(gutil));
+
+    return combined;
 });
