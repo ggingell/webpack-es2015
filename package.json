@@ -1,13 +1,14 @@
 {
-  "name": "tmpl-gulp-webpack-babel",
-  "version": "1.0.0",
+  "name": "webpack-es2015",
+  "version": "0.0.1",
   "description": "Template project using Gulp, webpack and Babel.",
   "main": "index.js",
+  "repository": "https://github.com/ggingell/webpack-es2015",
   "scripts": {
     "test": "./node_modules/karma/bin/karma start --single-run",
     "shrinkwrap": "shrinkwarp --dev"
   },
-  "author": "",
+  "author": "Grant Gingell",
   "license": "ISC",
   "devDependencies": {
     "babel-core": "^6.5.2",

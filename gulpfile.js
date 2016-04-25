@@ -95,3 +95,18 @@ gulp.task("test", function (done) {
         singleRun: true
     }, done).start();
 });
+
+gulp.task("tdd", function (done) {
+    var server = new KarmaServer({
+        configFile: __dirname + "/karma.conf.js",
+        singleRun: false
+    }, done);
+
+    server.on('error', karmaExitCb);
+    server.start();
+});
+
+function karmaExitCb(exitCode) {
+    console.log('Karma has exited with ' + exitCode);
+    process.exit(exitCode);
+}

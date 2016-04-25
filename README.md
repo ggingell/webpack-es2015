@@ -20,9 +20,16 @@ Installing Karma and Gulp this way allows you to use them via the command line. 
 
 `$ gulp`
 
-Start the Webpack Dev Server and watch src/**. Use this at the start of your dev workflow. Then open:
+This starts the Webpack Dev Server and watches src/**. Use this at the start of your dev workflow. Open:
 
 [http://localhost:8080/webpack-dev-server/](http://localhost:8080/webpack-dev-server/)
+
+In another session you can use test driven development:
+
+`$ gulp tdd`
+
+
+## Building
 
 `$ gulp build`
 
