@@ -5,8 +5,9 @@ This project is designed to be a starting point for React and ES2015 projects.
 ## Install Gulp
 
 `$ npm install -g gulp`
+`$ npm install -g karma-cli`
 
-Installing Gulp this way allows you to use Gulp via the command line.
+Installing Karma and Gulp this way allows you to use them via the command line. Both will use the config files local to the directory where you run them.
 
 ## Developing
 
@@ -16,10 +17,17 @@ Start the Webpack Dev Server and watch src/**. Use this at the start of your dev
 
 [http://localhost:8080/webpack-dev-server/](http://localhost:8080/webpack-dev-server/)
 
-
 `$ gulp build`
 
 Build the project into `dist`.
+
+## Testing
+
+`$ gulp test`
+
+Runs the Karma test harness.
+
+Tests also run after `$ gulp build`.
 
 ## Install NVM
 

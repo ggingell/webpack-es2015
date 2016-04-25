@@ -4,6 +4,7 @@ var gutil = require("gulp-util");
 var webpack = require("webpack");
 var WebpackDevServer = require("webpack-dev-server");
 var webpackConfig = require("./webpack.config.js");
+var KarmaServer = require('karma').Server;
 
 // The development server (the recommended option for development)
 gulp.task("default", ["watch:html", "webpack-dev-server"]);
@@ -21,7 +22,7 @@ gulp.task("build-dev", ["copy:html", "webpack:build-dev"], function() {
 });
 
 // Production build
-gulp.task("build", ["copy:html", "webpack:build"]);
+gulp.task("build", ["copy:html", "test", "webpack:build"]);
 
 gulp.task("copy:html", function(callback) {
     var stream = gulp.src('src/html/**/*.html')
@@ -84,4 +85,13 @@ gulp.task("webpack-dev-server", function(callback) {
         gutil.log("[webpack-dev-server]", "http://localhost:8080/webpack-dev-server/index.html");
         callback();
     });
+});
+
+// Karma Tests
+
+gulp.task("test", function (done) {
+    new KarmaServer({
+        configFile: __dirname + "/karma.conf.js",
+        singleRun: true
+    }, done).start();
 });

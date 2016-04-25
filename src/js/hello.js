@@ -1,11 +1,10 @@
 // src/js/hello.js
 'use strict'
 
-var hello = {
-    someProperty: "Grant Gingell",
-    someMethod(name=this.someProperty) {
-        console.log(`Hello ${name}`)
+export var hello = {
+    someProperty: "Hello Module",
+    someMethod(name="Default Value") {
+
+        console.log(`Hello there ${name}`)
     }
 }
-
-export default hello
