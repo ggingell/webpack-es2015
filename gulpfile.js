@@ -6,19 +6,20 @@ var WebpackDevServer = require("webpack-dev-server");
 var webpackConfig = require("./webpack.config.js");
 var KarmaServer = require('karma').Server;
 
+var lessCompiler = require('gulp-less');
+var LessPluginCleanCSS = require("less-plugin-clean-css");
+
+var paths = {
+    lessSrcGlob:    'src/less/**/*.less',
+    cssDest:        'dist/static/css/'
+}
+
+
 // The development server (the recommended option for development)
-gulp.task("default", ["watch:html", "webpack-dev-server"]);
+gulp.task("default", ["watch:html", "webpack-dev-server", "watch:less"]);
 
 gulp.task("watch:html", function(callback) {
     gulp.watch(["src/**/*"], ["copy:html"]);
-});
-
-// Build and watch cycle (another option for development)
-// Advantage: No server required, can run app from filesystem
-// Disadvantage: Requests are not blocked until bundle is available,
-//               can serve an old app on refresh
-gulp.task("build-dev", ["copy:html", "webpack:build-dev"], function() {
-    gulp.watch(["src/**/*"], ["webpack:build-dev"]);
 });
 
 // Production build
@@ -63,18 +64,6 @@ webpackConfigDebug.debug = true;
 // create a single instance of the compiler to allow caching
 var devCompiler = webpack(webpackConfigDebug);
 
-gulp.task("webpack:build-dev", function(callback) {
-
-    // run webpack
-    devCompiler.run(function(err, stats) {
-        if(err) throw new gutil.PluginError("webpack:build-dev", err);
-        gutil.log("[webpack:build-dev]", stats.toString({
-            colors: true
-        }));
-        callback();
-    });
-});
-
 gulp.task("webpack-dev-server", function(callback) {
 
     new WebpackDevServer(devCompiler, {
@@ -110,3 +99,37 @@ function karmaExitCb(exitCode) {
     console.log('Karma has exited with ' + exitCode);
     process.exit(exitCode);
 }
+
+// Less
+
+gulp.task("watch:less", function (done) {
+    // No need to run this task separately, it runs as part of default task.
+    gulp.watch(paths.lessSrcGlob, ["build:less"]);
+});
+
+gulp.task("build:less", function () {
+
+    var config = {
+        src: paths.lessSrcGlob,
+        dest: paths.cssDest,
+        lessConfig: {
+            plugins: [],
+            paths: [
+                // If you need to source LESS imports from node_modules you
+                // can provide the path here, or use less-plugin-npm-import
+            ]
+        }
+    }
+
+    var linter = new LessPluginCleanCSS({
+        advanced: true,
+        keepBreaks: true
+    });
+    config.lessConfig.plugins.push(linter);
+
+    var stream = gulp.src(config.src)
+        .pipe(lessCompiler(config.lessConfig))
+        .pipe(gulp.dest(config.dest));
+
+    return stream;
+});
