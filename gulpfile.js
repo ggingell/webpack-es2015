@@ -79,10 +79,10 @@ gulp.task("webpack-dev-server", function(callback) {
 
     new WebpackDevServer(devCompiler, {
         contentBase: "dist"
-    }).listen(8080, "localhost", function(err) {
+    }).listen(8888, "localhost", function(err) {
         if(err) throw new gutil.PluginError("webpack-dev-server", err);
         // Server listening
-        gutil.log("[webpack-dev-server]", "http://localhost:8080/webpack-dev-server/index.html");
+        gutil.log("[webpack-dev-server]", "http://localhost:8888/webpack-dev-server/index.html");
         callback();
     });
 });
