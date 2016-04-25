@@ -19,6 +19,8 @@
     "expect": "^1.18.0",
     "gulp": "^3.9.1",
     "gulp-less": "^3.0.5",
+    "gulp-livereload": "^3.8.1",
+    "gulp-sync": "^0.1.4",
     "gulp-util": "^3.0.7",
     "karma": "^0.13.22",
     "karma-chrome-launcher": "^0.2.3",
@@ -32,7 +34,6 @@
     "mocha-loader": "^0.7.1",
     "shrinkwarp": "^1.2.0",
     "stream-combiner2": "^1.1.1",
-    "webpack": "^1.12.13",
-    "webpack-dev-server": "^1.14.1"
+    "webpack": "^1.12.13"
   }
 }

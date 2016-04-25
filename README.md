@@ -1,6 +1,10 @@
 # ES2015 + JSX via Gulp, Babel & Webpack
 
-This project is designed to be a starting point for React ES2015 projects. It has tests example modules and tests use Karma, Maocha Expect for assertions. Also uses the Webpack Dev Server.
+This project is designed to be a starting point for React ES2015 projects. It has tests example modules and tests use Karma, Maocha Expect for assertions. Uses gulp-livereload. You will need your own HTTP server for local dev, e.g. with Python
+
+`$ python -m SimpleHTTPServer 9876`
+
+`$ open http://localhost:9876/dist/index.html`
 
 ## Setup
 

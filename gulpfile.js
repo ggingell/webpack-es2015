@@ -1,26 +1,39 @@
-
 var gulp = require("gulp");
+var gulpsync = require('gulp-sync')(gulp);
 var gutil = require("gulp-util");
 var webpack = require("webpack");
 var WebpackDevServer = require("webpack-dev-server");
 var webpackConfig = require("./webpack.config.js");
 var KarmaServer = require('karma').Server;
 
+// Better live reloader and it's decoupled from webpack
+var livereload = require('gulp-livereload');
+
 var combiner = require('stream-combiner2');
 var lessCompiler = require('gulp-less');
 var LessPluginCleanCSS = require("less-plugin-clean-css");
 
 var paths = {
+    srcAll:         'src/**/*.*',
     lessSrcGlob:    'src/less/**/*.less',
     cssDest:        'dist/static/css/'
 }
 
+gulp.task("default", ["watch:all"]);
 
-// The development server (the recommended option for development)
-gulp.task("default", ["watch:html", "webpack-dev-server", "watch:less"]);
+gulp.task("watch:all", function(callback) {
+    livereload.listen({
+        basePath: "dist",
+        start: true,
+        quiet: false,
+        reloadPage: "index.html"
+    });
+    gulp.watch(paths.srcAll, gulpsync.sync(["build:less", "copy:html", "webpack:build", "reload"]));
+});
 
-gulp.task("watch:html", function(callback) {
-    gulp.watch(["src/**/*"], ["copy:html"]);
+gulp.task("reload", function(callback) {
+    livereload.reload();
+    callback();
 });
 
 // Production build
@@ -53,26 +66,6 @@ gulp.task("webpack:build", function(callback) {
         gutil.log("[webpack:build]", stats.toString({
             colors: true
         }));
-        callback();
-    });
-});
-
-// modify some webpack config options
-var webpackConfigDebug = Object.create(webpackConfig);
-webpackConfigDebug.devtool = "sourcemap";
-webpackConfigDebug.debug = true;
-
-// create a single instance of the compiler to allow caching
-var devCompiler = webpack(webpackConfigDebug);
-
-gulp.task("webpack-dev-server", function(callback) {
-
-    var server = new WebpackDevServer(devCompiler, {
-        contentBase: "dist"
-    }).listen(8888, "localhost", function(err) {
-        if(err) throw new gutil.PluginError("webpack-dev-server", err);
-        // Server listening
-        gutil.log("[webpack-dev-server]", "http://localhost:8888/webpack-dev-server/index.html");
         callback();
     });
 });
