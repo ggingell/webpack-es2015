@@ -18,7 +18,7 @@ var paths = {
     cssDest:        'dist/static/css/'
 }
 
-gulp.task("default", ["watch:all"]);
+gulp.task("default", ["build:dev", "watch:all"]);
 
 gulp.task("watch:all", function(callback) {
     livereload.listen({
@@ -27,13 +27,15 @@ gulp.task("watch:all", function(callback) {
         quiet: false,
         reloadPage: "index.html"
     });
-    gulp.watch(paths.srcAll, gulpsync.sync(["build:less", "copy:html", "webpack:build", "reload"]));
+    gulp.watch(paths.srcAll, gulpsync.sync(["build:dev", "reload"]));
 });
 
 gulp.task("reload", function(callback) {
     livereload.reload();
     callback();
 });
+
+gulp.task("build:dev", ["build:less", "copy:html", "webpack:build"]);
 
 // Production build
 gulp.task("build", ["copy:html", "test", "build:less", "webpack:build"]);
