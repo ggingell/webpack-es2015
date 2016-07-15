@@ -53,9 +53,11 @@ Build the project into `dist`.
 
 ## Installing a Module
 
-`$ npm i --save some-module && npm run shrinkwrap`
+`$ npm i -S some-module && npm run shrinkwrap`
+
 `$ npm test`
-`$ git commit -m 'Added some-module.'`
+
+`$ git commit -m 'deps: Add some-module@1.0.0'`
 
 ## Testing
 
@@ -67,6 +69,6 @@ Tests also run after `$ gulp build`.
 
 ## Install NVM
 
-This is optional but highly recommended since Node's compatibilty varies highly between versions. See install instructions here: https://github.com/creationix/nvm
+This is optional but highly recommended since Node's compatibility varies highly between versions. See install instructions here: https://github.com/creationix/nvm
 
 Then run `$ nvm use` in this repo's root directory whenever you enter with a new shell session.
