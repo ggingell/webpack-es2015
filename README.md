@@ -8,15 +8,21 @@ This project is designed to be a starting point for React ES2015 projects. It ha
 
 ## Setup
 
-If you have not, you should install and use NVM, see below. Clone this repo. Then:
+Clone this repo. If you have not, you should install and use NVM, see below.
 
-`$ npm install`
+`$ nvm use`
+
+Then:
+
+`$ npm i`
 
 ### Install Gulp and Karma
 
-`$ npm install -g gulp`
+`$ npm i -g gulp`
 
-`$ npm install -g karma-cli`
+Optional, but useful if you want to run the karma tests with the cli.
+
+`$ npm i -g karma-cli`
 
 Installing Karma and Gulp this way allows you to use them via the command line. Both will use the config files local to the directory where you run them.
 
@@ -24,14 +30,20 @@ Installing Karma and Gulp this way allows you to use them via the command line. 
 
 `$ gulp`
 
-This starts the Webpack Dev Server and watches src/**. Use this at the start of your dev workflow. Open:
+This starts the watch tasks that will re-build when files change in `src/**`.
+In another terminal session, navigate to this repo and start a simple web server. Python can do it:
 
-[http://localhost:8888/webpack-dev-server/](http://localhost:8888/webpack-dev-server/)
+`$ python -m SimpleHTTPServer 9876`
 
-In another session you can use test driven development:
+`$ open http://localhost:9876/dist/index.html`
+
+Once this page is open in your browser and you've started the watch task you can enable Livreload plugin if you've installed it. **Note:** The Livreload plugin talks directly to a server that is started by the main `gulp` task. This means it will work with almost any http server.
+
+### TDD
+
+In another session you can use test driven development. This will run unit tests on every build:
 
 `$ gulp tdd`
-
 
 ## Building
 
